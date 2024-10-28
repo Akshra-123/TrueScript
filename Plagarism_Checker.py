@@ -15,13 +15,16 @@ from sklearn.svm import SVC
 import pickle
 
 # Load Dataset
+
 data=pd.read_csv("C:\\TrueScript\\dataset.csv")
 # print(data.head())
 
 # Checking distribution of label function
+
 print(data['label'].value_counts())
 
 # Clean Text
+
 def preprocess_text(text):
     # Remove punctuation
     text = text.translate(str.maketrans("", "", string.punctuation))
@@ -34,9 +37,8 @@ def preprocess_text(text):
 data["source_text"] = data["source_text"].apply(preprocess_text)
 data["plagiarized_text"] = data["plagiarized_text"].apply(preprocess_text)
 
-
-
 # Vectorisation
+
 tfidf_vectorizer = TfidfVectorizer()
 X = tfidf_vectorizer.fit_transform(data["source_text"] + " " + data["plagiarized_text"])
 y = data["label"]
@@ -45,18 +47,16 @@ y = data["label"]
 # print(y)
 
 # Train Test Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Logistic Regression
 
 model = LogisticRegression()
 model.fit(X_train,y_train)
-
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 classification_rep = classification_report(y_test, y_pred)
-
 cm = confusion_matrix(y_test, y_pred)
 
 print("Accuracy:", accuracy)
@@ -65,9 +65,8 @@ print(classification_rep)
 print("Confusion Matrix")
 print(cm)
 
-
 # Random Forest Model
-# Instantiate the model
+
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 # Fit the model
 model.fit(X_train, y_train)
@@ -86,8 +85,8 @@ print(classification_rep)
 print("Confusion Matrix:")
 print(cm)
 
-# Naive Bayes 
-# Instantiate the model
+# Naive Bayes -this algorithm is particularly suited for text classification problems
+
 model = MultinomialNB()
 # Fit the model
 model.fit(X_train, y_train)
@@ -106,8 +105,8 @@ print(classification_rep)
 print("Confusion Matrix:")
 print(cm)
 
-# SVM
-# Instantiate the model
+# SVM -used for classification by finding the hyperplane that best separates the two classes (plagiarized vs. non-plagiarized texts)
+
 model = SVC(kernel='linear', random_state=42)
 # Fit the model
 model.fit(X_train, y_train)
@@ -119,6 +118,7 @@ accuracy = accuracy_score(y_test, y_pred)
 classification_rep = classification_report(y_test, y_pred)
 # Generate confusion matrix
 cm = confusion_matrix(y_test, y_pred)
+
 # Print results
 print("Accuracy:", accuracy)
 print("Classification Report:")
@@ -142,4 +142,8 @@ def detect(input_text):
 
 # example ( it is a plagarized text)
 input_text = 'Researchers have discovered a new species of butterfly in the Amazon rainforest.'
+print(detect(input_text))
+
+# example 
+input_text = 'In recent years, artificial intelligence (AI) has revolutionized many fields, including healthcare, finance, and even entertainment. AI systems are now able to diagnose illnesses, forecast market trends, and generate music or art. However, these advancements also bring up significant ethical concerns, such as the risk of job loss and the difficulty in ensuring fairness and openness. As AI technology advances, society must balance innovation with accountability, aiming to make the benefits of AI accessible while reducing any negative impacts.'
 print(detect(input_text))
