@@ -12,6 +12,7 @@ from sklearn.metrics import accuracy_score, classification_report,confusion_matr
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
+import pickle
 
 # Load Dataset
 data=pd.read_csv("C:\\TrueScript\\dataset.csv")
@@ -124,3 +125,21 @@ print("Classification Report:")
 print(classification_rep)
 print("Confusion Matrix:")
 print(cm)
+
+# Save SVM and Vectoriser 
+pickle.dump(model,open("model.pkl",'wb'))
+pickle.dump(tfidf_vectorizer, open('tfidf_vectorizer.pkl','wb'))
+
+# Load Model and Vectorizer
+model = pickle.load(open('model.pkl','rb'))
+tfidf_vectorizer = pickle.load(open('tfidf_vectorizer.pkl','rb'))
+
+# Detection System
+def detect(input_text):
+    vectorized_text = tfidf_vectorizer.transform([input_text])
+    result = model.predict(vectorized_text)
+    return "Plagiarim Detected" if result[0] == 1 else "No Plagiarism"
+
+# example ( it is a plagarized text)
+input_text = 'Researchers have discovered a new species of butterfly in the Amazon rainforest.'
+print(detect(input_text))
