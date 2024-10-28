@@ -1,13 +1,12 @@
 # Import Modules
 
-import nltk
-nltk.download("popular")
-from sklearn.metrics.pairwise import cosine_similarity
+import nltk  # natural language toolkit used for tasks related to natural language processing
+# nltk.download("popular")  # Downloads popular datasets and pre-trained models for NLP tasks
 import pandas as pd
-import string
-from nltk.corpus import stopwords
-import joblib
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report,confusion_matrix
-from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Load Dataset
+data=pd.read_csv("C:\\TrueScript\\dataset.csv")
+# print(data.head())
+
+# Checking distribution of label function
+print(data['label'].value_counts())
