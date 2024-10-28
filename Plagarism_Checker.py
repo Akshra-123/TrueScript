@@ -5,6 +5,7 @@ import nltk  # natural language toolkit used for tasks related to natural langua
 import pandas as pd
 import string
 from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Load Dataset
 data=pd.read_csv("C:\\TrueScript\\dataset.csv")
@@ -26,5 +27,12 @@ def preprocess_text(text):
 data["source_text"] = data["source_text"].apply(preprocess_text)
 data["plagiarized_text"] = data["plagiarized_text"].apply(preprocess_text)
 
-print(data['source_text'])
-print(data["plagiarized_text"])
+
+
+# Vectorisation
+tfidf_vectorizer = TfidfVectorizer()
+X = tfidf_vectorizer.fit_transform(data["source_text"] + " " + data["plagiarized_text"])
+y = data["label"]
+
+print(X)
+print(y)
