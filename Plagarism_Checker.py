@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split    
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report,confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
 
 # Load Dataset
 data=pd.read_csv("C:\\TrueScript\\dataset.csv")
@@ -59,5 +60,26 @@ print("Accuracy:", accuracy)
 print("Classification Report:")
 print(classification_rep)
 print("Confusion Matrix")
+print(cm)
+
+
+# Random Forest Model
+# Instantiate the model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+# Fit the model
+model.fit(X_train, y_train)
+# Make predictions
+y_pred = model.predict(X_test)
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+# Generate classification report
+classification_rep = classification_report(y_test, y_pred)
+# Generate confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+# Print results
+print("Accuracy:", accuracy)
+print("Classification Report:")
+print(classification_rep)
+print("Confusion Matrix:")
 print(cm)
 
